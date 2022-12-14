@@ -1,25 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState, useEffect } from 'react';
+import Field from './components/Field';
 
-function App() {
+const calculateSeason = (scrollY, innerHeight) => {
+  const scrolls = Math.floor(scrollY / innerHeight);
+  return 2022 - scrolls;
+};
+
+const App = () => {
+  const [innerHeight, updateInnerHeight] = useState(window.innerHeight);
+  const [season, updateSeason] = useState(2022);
+
+  const onScroll = e => {
+    const current = calculateSeason(window.scrollY, innerHeight);
+    updateSeason(current);
+  };
+
+  const onResize = e => {
+    updateInnerHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onResize);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className='Floating'>
+        <div>{`Season: ${season}`}</div>
+        <Field />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  min-height: 1800vh;
 }
 
 .App-logo {
@@ -35,4 +36,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Floating {
+  position: sticky;
+  top: 000;
 }
