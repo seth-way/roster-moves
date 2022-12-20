@@ -1,7 +1,8 @@
 .Field {
-  height: 90vh;
+  width: 45vw;
+  top: 100vh;
 }
 
 .Field > img {
-  height: 100%;
+  width: 100%;
 }
