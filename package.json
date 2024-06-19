@@ -1,0 +1,28 @@
+{
+  "name": "roster-moves",
+  "version": "1.0.0",
+  "description": "Simple, interactive UI for visualizing historic nfl rosters",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seth-way/roster-moves.git"
+  },
+  "keywords": [
+    "js",
+    "express",
+    "css"
+  ],
+  "author": "Seth Way",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}
