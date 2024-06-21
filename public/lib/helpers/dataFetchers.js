@@ -1,4 +1,4 @@
-const teamIds = Array.from(Array(34), (_, i) => i + 1);
+import { TEAM_IDS } from '../../assets/data/constants.js'
 
 export const fetchRoster = async (year, id) => {
   try {
@@ -10,7 +10,7 @@ export const fetchRoster = async (year, id) => {
 
 export const fetchTeams = async () => {
   try {
-    for (const id of teamIds) {
+    for (const id of TEAM_IDS) {
       await fetch(`/api/teams/${id}`);
     }
   } catch (err) {
