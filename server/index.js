@@ -4,7 +4,7 @@ const apiRouter = require('./routes/api/index');
 
 const app = express();
 const port = 3000;
-console.log('test');
+
 // Use routes
 app.use('/api', apiRouter);
 

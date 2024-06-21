@@ -1,3 +1,74 @@
+:root {
+  --grass1: #358a3c;
+  --grass2: #53ba39;
+  --primary: #004c54;
+  --secondary: white;
+  --accent: #a5acaf;
+}
+
 body {
-  background: green;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  /* border: thin solid red; */
+}
+
+#frame {
+  width: 300px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+#players-overlay {
+  position: absolute;
+  top: 0;
+  bottom; 0;
+  left: 0;
+  right: 0;
+}
+
+.player {
+  width: 12px;
+  aspect-ratio: 1/1;
+  font-size: .5em;
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  background: var(--primary);
+  color: var(--secondary);
+  border: solid var(--accent) 2px;
+  &.defense {
+    background: var(--secondary);
+    color: var(--primary);
+  }
+}
+
+@media only screen and (min-width: 650px) {
+  #frame {
+    width: 450px;
+  }
+  .player {
+    font-size: 0.8em;
+    width: 15px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  #frame {
+    width: 600px;
+  }
+  .player {
+    font-size: 0.9em;
+    width: 18px;
+  }
 }
