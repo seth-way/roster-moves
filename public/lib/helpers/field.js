@@ -13,46 +13,77 @@ const getShuffledArray = () => {
     .map(({ value }) => value);
 };
 
+const isInBounds = (x, y, deltaX, deltaY, unit) => {
+  let minX = 50 * unit;
+  let maxX = 58 * unit;
+  let minY = 0;
+  let maxY = 58 * unit;
+
+  if (x < 50 * unit) {
+    minX = 10 * unit;
+    maxX = 48 * unit;
+    minY = 50 * unit;
+  }
+
+  if (y < 10 * unit) {
+    minY = 0;
+    maxY = 8 * unit;
+  }
+
+  if (x < 10 * unit) {
+    minX = 0;
+    maxX = 8 * unit;
+    minY = 0;
+    maxY = 58 * unit;
+  }
+
+  return meetsMinMax(x + deltaX, y + deltaY, minX, minY, maxX, maxY);
+};
+
+const meetsMinMax = (newX, newY, minX, minY, maxX, maxY) => {
+  if (newX < minX || newX > maxX) return false;
+  if (newY < minY || newY > maxY) return false;
+  return true;
+};
+
 const getValidXY = (player, players, unit) => {
   const { x, y } = player;
-  for (const deltaX of getShuffledArray()) {
-    for (const deltaY of getShuffledArray()) {
+  for (let deltaX of getShuffledArray()) {
+    deltaX *= unit;
+    for (let deltaY of getShuffledArray()) {
+      deltaY *= unit;
       if (
+        isInBounds(x, y, deltaX, deltaY, unit) &&
         players.every(other => {
           if (
             other.id === player.id ||
-            2 * unit <
-              getDistance(
-                x + deltaX * unit,
-                y + deltaY * unit,
-                other.x,
-                other.y
-              )
+            2 * unit < getDistance(x + deltaX, y + deltaY, other.x, other.y)
           ) {
             return true;
           }
         })
       ) {
-        //console.log('valid');
-        //return [x + i, y + j];
-        return [deltaX * unit, deltaY * unit];
+        return [deltaX, deltaY];
       }
     }
   }
+
   return [0, 0];
-  //return [x, y];
 };
 
 export const movePlayer = (player, element, players, unit) => {
   let [deltaX, deltaY] = getValidXY(player, players, unit);
-  element.style.setProperty('--translate-x', `${deltaX}px`);
-  element.style.setProperty('--translate-y', `${deltaY}px`);
+  if (!deltaX && !deltaY) {
+    element.classList.add('wiggle');
+  } else {
+    element.style.setProperty('--translate-x', `${deltaX}px`);
+    element.style.setProperty('--translate-y', `${deltaY}px`);
 
-  player.x += deltaX;
-  player.y += deltaY;
+    player.x += deltaX;
+    player.y += deltaY;
 
-  element.classList.add('wander');
-
+    element.classList.add('wander');
+  }
   element.addEventListener('animationend', () => {
     if (element.classList.contains('wander')) {
       element.classList.remove('wander');
@@ -65,26 +96,4 @@ export const movePlayer = (player, element, players, unit) => {
       element.classList.remove('wiggle');
     }
   });
-  // element.addEventListener(
-  //   'animationend',
-  //   () => {
-  //     element.classList.remove('wander');
-  //     element.style.left = player.x + 'px';
-  //     element.style.top = player.y + 'px';
-  //     element.style.removeProperty('--translate-x');
-  //     element.style.removeProperty('--translate-y');
-  //   },
-  //   { once: true }
-  // );
-
-  // setTimeout(() => {
-  //   element.classList.add('wiggle');
-  //   element.addEventListener(
-  //     'animationend',
-  //     () => {
-  //       element.classList.remove('wiggle');
-  //     },
-  //     { once: true }
-  //   );
-  // }, 1001);
 };
