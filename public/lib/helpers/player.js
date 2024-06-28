@@ -133,7 +133,7 @@ const getRandomXY = (player, players, unit) => {
   return [x, y];
 };
 
-const getDistance = (x1, y1, x2, y2) =>
+export const getDistance = (x1, y1, x2, y2) =>
   Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 export const getUnitSize = width => {

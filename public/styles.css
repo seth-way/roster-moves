@@ -43,16 +43,29 @@ canvas {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-
+  
   background: var(--primary);
   color: var(--secondary);
   border: solid var(--accent) 2px;
+  
+  --origin-x: 0px;
+  --origin-y: 0px;
+  --translate-x: 0px;
+  --translate-y: 0px;
+  
   &.defense {
     background: var(--secondary);
     color: var(--primary);
   }
+  &.wiggle {
+    transform-origin: bottom;
+    animation: 3s ease-in-out 3 wiggle;
+  }
+  &.wander {
+    animation: 1s ease-in-out 1 wander forwards;
+  }
 }
-
+/* --- screen sizes --- */
 @media only screen and (min-width: 650px) {
   #frame {
     width: 450px;
@@ -70,5 +83,34 @@ canvas {
   .player {
     font-size: 0.9em;
     width: 18px;
+  }
+}
+/* --- animations --- */
+@keyframes wiggle {
+  0%,
+  60%,
+  100% {
+    transform: scale(1, 1);
+  }
+  10%,
+  30%,
+  50% {
+    transform: scale(1.2, 90%);
+  }
+  20% {
+    transform: scale(90%, 1.1) rotateZ(-10deg);
+  }
+  40% {
+    ;
+    transform: scale(90%, 1.1) rotateZ(10deg);
+  }
+}
+
+@keyframes wander {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(var(--translate-x), var(--translate-y));
   }
 }
