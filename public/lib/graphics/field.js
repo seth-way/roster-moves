@@ -1,5 +1,6 @@
-import { getCssVariableValue } from '../helpers/utility.js';
+import { getCssVariableValue, getRandomElement } from '../helpers/utility.js';
 import { getPlayerXY, normalizePlayer } from '../helpers/player.js';
+import { movePlayer } from '../helpers/field.js';
 import Player from './player.js';
 // colors
 const grass1 = getCssVariableValue('--grass1');
@@ -11,14 +12,14 @@ const accent = getCssVariableValue('--accent');
 // const colors = {grass1, grass2, primary, secondary};
 
 class Field {
-  constructor(canvas, container) {
+  constructor(canvas, container, unit) {
+    Object.assign(this, { canvas, container, unit });
     this.players = {};
-    Object.assign(this, { canvas, container });
-    this.canvas.id = Date.now();
     this.ctx = canvas.getContext('2d');
   }
 
-  paint(unit) {
+  paint(unit = this.unit) {
+    this.unit = unit;
     const { ctx, players, width, container } = this;
     ctx.clearRect(0, 0, width, width);
     this.width = container.clientWidth;
@@ -74,19 +75,25 @@ class Field {
     for (const player of Object.values(players)) {
       const oldPlayerNode = document.getElementById(player.id);
       oldPlayerNode.remove();
-      this.addPlayer(player, unit);
+      this.addPlayer(player);
     }
   }
 
-  addPlayer(player, unit) {
-    const { players } = this;
+  addPlayer(player) {
+    const { players, unit } = this;
+    const tenYards = 10 * unit;
 
     [player.x, player.y] = getPlayerXY(player, players, unit);
+    player.isStarter = true;
+    if (player.x < tenYards || player.y < tenYards) player.isStarter = false;
+    if (player.x > 5 * tenYards) player.isStarter = false;
+    if (player.y > 5 * tenYards) player.isStarter = false;
+
     players[player.id] = player;
     player.paint(unit);
   }
 
-  addTeam(team, element, unit) {
+  addTeam(team, element) {
     const { roster, baseO, baseD } = team;
     for (const [groupKey, group] of Object.entries(roster)) {
       const { positions } = group;
@@ -105,7 +112,8 @@ class Field {
             groupKey,
             base
           );
-          this.addPlayer(new Player(player, element), unit);
+
+          this.addPlayer(new Player(player, element));
         }
       }
     }
@@ -113,6 +121,35 @@ class Field {
 
   removePlayer(player) {
     delete this.players[player.id];
+  }
+
+  animate() {
+    const { players, unit } = this;
+    const ids = Object.keys(players);
+    if (ids.length > 80) {
+      const id = getRandomElement(ids);
+      const player = players[id];
+      const element = document.getElementById(id);
+      if (element.classList.length < 3) {
+        if (player.isStarter) {
+          element.classList.add('wiggle');
+
+          element.addEventListener(
+            'animationend',
+            () => {
+              element.classList.remove('wiggle');
+            },
+            { once: true }
+          );
+        } else {
+          movePlayer(player, element, Object.values(players), unit);
+        }
+      }
+    }
+
+    setTimeout(() => {
+      this.animate();
+    }, 700);
   }
 }
 
