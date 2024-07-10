@@ -1,5 +1,48 @@
 export const TEAM_IDS = Array.from(Array(34), (_, i) => i + 1);
 
+export const TEAM_ABBREVS = [
+  'ARI',
+  'ATL',
+  'BAL',
+  'BUF',
+  'CAR',
+  'CHI',
+  'CIN',
+  'CLE',
+  'DAL',
+  'DEN',
+  'DET',
+  'GB',
+  'HOU',
+  'IND',
+  'JAX',
+  'KC',
+  'LV',
+  'LAC',
+  'LAR',
+  'MIA',
+  'MIN',
+  'NE',
+  'NO',
+  'NYG',
+  'NYJ',
+  'PHI',
+  'PIT',
+  'SF',
+  'SEA',
+  'TB',
+  'TEN',
+  'WSH',
+  'AFC',
+  'NFC',
+];
+
+export const YEARS = [];
+
+for (let i = 2020; i < 2025; i += 1) {
+  YEARS.shift(i);
+}
+
 export const POSITIONS = {
   offense: ['WR', 'LT', 'LG', 'C', 'RG', 'RT', 'QB', 'TE', 'RB'],
   defense: [

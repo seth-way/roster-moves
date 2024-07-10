@@ -1,7 +1,13 @@
 import { getFeaturedRoster, getTeams } from './lib/helpers/dataFetchers.js';
 import { getUnitSize } from './lib/helpers/field.js';
 import Field from './lib/graphics/field.js';
-import { FORMATIONS, POSITIONS } from './assets/data/constants.js';
+import {
+  FORMATIONS,
+  POSITIONS,
+  TEAM_ABBREVS,
+  YEARS,
+} from './assets/data/constants.js';
+import { createScroller, createObserver } from './lib/graphics/scrollers.js';
 // <><> Variables <><> //
 const teams = {};
 const featured = {
@@ -15,13 +21,27 @@ let unit = 10;
 // <><> DOM Elements <><> //
 const frame = document.getElementById('frame');
 const playersOverlay = document.getElementById('players-overlay');
+const teamsScroller = document.getElementById('teams-scroller');
+// const teamsCarousel = teamsScroller.querySelector('ol');
 // <><> Event Listeners <><> /
 document.addEventListener('DOMContentLoaded', start);
 // <><> Functions <><> //
 async function start() {
   try {
     await getTeams(teams);
+
+    const teamsData = TEAM_ABBREVS.map(abv => {
+      const info = { ...teams[abv] };
+      info.id = abv;
+      if (info.id === 'PHI') console.log(info)
+      return info;
+    });
+
     await getFeaturedRoster(featured, teams);
+
+    createScroller(teamsData, teamsScroller, 'teams');
+    createObserver(teamsScroller);
+    // const scrollers = document.querySelectorAll('');
 
     const canvas = document.createElement('canvas');
     canvas.width = frame.clientWidth;
