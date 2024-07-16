@@ -17,37 +17,54 @@ const createBlankSpace = () => {
   return item;
 };
 
-const createObserverCB = targetDivs => entries => {
-  let featuredIdx;
-  targetDivs.forEach((div) =>
-    div.classList.remove('featured', 'featured-1', 'featured-2')
-  );
+const createObserverCB = (targetDivs, updateFeatured) => entries => {
+  // targetDivs.forEach(div =>
+  //   div.classList.remove('featured', 'featured-1', 'featured-2')
+  // );
 
   for (const entry of entries) {
-    if (entry.target.id && entry.intersectionRatio === 1) {
+    let team, year;
+    if (entry.target.id && entry.intersectionRatio > 0.65) {
       entry.target.classList.add('featured');
-      featuredIdx = parseInt(entry.target.getAttribute('idx')) + 2;
-      break;
-    }
-  }
+      const featuredIdx = parseInt(entry.target.getAttribute('idx')) + 2;
+      const featuredID = entry.target.id;
 
-  for (const delta of [1, 2]) {
-    for (const dir of [-1, 1]) {
-      const target = targetDivs[featuredIdx + delta * dir];
-      if (target) target.classList.add(`featured-${delta}`);
+      if (parseInt(featuredID)) {
+        year = parseInt(featuredID);
+      } else {
+        team = featuredID;
+      }
+
+      updateFeatured(team, year);
+
+      targetDivs.forEach(div => {
+        div.classList.remove('featured-1', 'featured-2');
+        if (div !== entry.target) {
+          div.classList.remove('featured');
+        }
+      });
+
+      for (const delta of [1, 2]) {
+        for (const dir of [-1, 1]) {
+          const target = targetDivs[featuredIdx + delta * dir];
+          if (target) target.classList.add(`featured-${delta}`);
+        }
+      }
+
+      break;
     }
   }
 };
 
-export const createObserver = scroller => {
+export const createObserver = (scroller, updateFeatured) => {
   const observerOptions = {
     root: scroller,
     rootMargin: '-35% 5% -35% 5%',
-    threshold: [0.95, 1],
+    threshold: [0.05, 0.5, 0.95],
   };
   const targets = scroller.querySelectorAll('li');
   const observer = new IntersectionObserver(
-    createObserverCB(targets),
+    createObserverCB(targets, updateFeatured),
     observerOptions
   );
 
@@ -58,13 +75,6 @@ export const createScroller = (data, scroller, type) => {
   const viewPort = document.createElement('ol');
   viewPort.classList.add('scroller-viewport');
   scroller.appendChild(viewPort);
-
-  // const featureWindow = document.createElement('div');
-  // featureWindow.setAttribute('id', `feature-${type}-window`);
-  // featureWindow.classList.add('feature-window');
-
-  // // scroller.appendChild(featureWindow);
-  // viewPort.appendChild(featureWindow);
 
   viewPort.appendChild(createBlankSpace());
   viewPort.appendChild(createBlankSpace());

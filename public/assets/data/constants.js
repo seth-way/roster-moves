@@ -33,13 +33,13 @@ export const TEAM_ABBREVS = [
   'TB',
   'TEN',
   'WSH',
-  'AFC',
-  'NFC',
+  //'AFC',
+  //'NFC',
 ];
 
 export const YEARS = [];
 
-for (let i = 2020; i < 2025; i += 1) {
+for (let i = 2020; i < 2024; i += 1) {
   YEARS.shift(i);
 }
 
@@ -63,7 +63,7 @@ export const POSITIONS = {
 
 export const FORMATIONS = {
   offense: ['3WR 1TE'],
-  defense: ['Base 3-4 D'],
+  defense: ['Base 3-4 D', 'Base 4-3 D'],
   specialTeams: ['Special Teams'],
 };
 
@@ -72,4 +72,5 @@ export const STARTERS = {
   defense: ['NT1', 'LCB1', 'SS1', 'FS1', 'RCB1'],
   offense3WR1TE: ['QB1', 'RB1', 'WR1', 'WR2', 'WR3', 'TE1'],
   defenseBase34D: ['LDE1', 'RDE1', 'SLB1', 'WLB1', 'LILB1', 'RILB1'],
+  defenseBase43D: ['LDE1', 'LDT1', 'RDT1', 'RDE1', 'WLB1', 'MLB1', 'SLB1'],
 };

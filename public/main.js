@@ -33,15 +33,9 @@ async function start() {
     const teamsData = TEAM_ABBREVS.map(abv => {
       const info = { ...teams[abv] };
       info.id = abv;
-      if (info.id === 'PHI') console.log(info)
+      if (info.id === 'PHI') console.log(info);
       return info;
     });
-
-    await getFeaturedRoster(featured, teams);
-
-    createScroller(teamsData, teamsScroller, 'teams');
-    createObserver(teamsScroller);
-    // const scrollers = document.querySelectorAll('');
 
     const canvas = document.createElement('canvas');
     canvas.width = frame.clientWidth;
@@ -63,8 +57,21 @@ async function start() {
 
     resizeObserver.observe(frame);
 
+    await getFeaturedRoster(featured, teams, () => field.paint(unit));
+
+    createScroller(teamsData, teamsScroller, 'teams');
+    createObserver(
+      teamsScroller,
+      async (team = featured.team, year = featured.year) => {
+        if (team !== featured.team || year !== featured.year) {
+          featured.team = team;
+          featured.year = year;
+          await getFeaturedRoster(featured, teams, () => field.resetRoster(featured));
+        }
+      }
+    );
+
     field.addTeam(featured, playersOverlay);
-    field.paint();
     field.animate();
   } catch (err) {
     console.error(err);

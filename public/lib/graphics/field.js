@@ -3,11 +3,6 @@ import { getPlayerXY, normalizePlayer } from '../helpers/player.js';
 import { movePlayer } from '../helpers/field.js';
 import Player from './player.js';
 // colors
-const grass1 = getCssVariableValue('--grass1');
-const grass2 = getCssVariableValue('--grass2');
-const primary = getCssVariableValue('--primary');
-// const secondary = getCssVariableValue('--secondary');
-const accent = getCssVariableValue('--accent');
 
 // const colors = {grass1, grass2, primary, secondary};
 
@@ -19,6 +14,11 @@ class Field {
   }
 
   paint(unit = this.unit) {
+    const grass1 = getCssVariableValue('--grass1');
+    const grass2 = getCssVariableValue('--grass2');
+    const primary = getCssVariableValue('--primary');
+    const secondary = getCssVariableValue('--secondary');
+    const accent = getCssVariableValue('--accent');
     this.unit = unit;
     const { ctx, players, width, container } = this;
     ctx.clearRect(0, 0, width, width);
@@ -30,7 +30,7 @@ class Field {
     ctx.fillStyle = primary;
     ctx.fillRect(10 * unit, 0, 40 * unit, 10 * unit);
     // offense endzone
-    ctx.fillStyle = accent;
+    ctx.fillStyle = secondary;
     ctx.fillRect(10 * unit, 50 * unit, 40 * unit, 10 * unit);
 
     ctx.strokeStyle = 'white';
@@ -120,7 +120,20 @@ class Field {
   }
 
   removePlayer(player) {
+    const playerNode = document.getElementById(player.id);
+    playerNode.remove();
     delete this.players[player.id];
+  }
+
+  removeAllPlayers() {
+    for (const player of Object.values(this.players)) {
+      this.removePlayer(player);
+    }
+  }
+
+  resetRoster(newRoster) {
+    this.removeAllPlayers();
+    this.addTeam(newRoster, this.container);
   }
 
   animate() {

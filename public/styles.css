@@ -3,7 +3,7 @@
   --grass2: #53ba39;
   --primary: #004c54;
   --secondary: white;
-  --accent: #a5acaf;
+  --accent: white;
   --palette1: #212A31;
   --palette2: #2E3944;
   --palette3: #124E66;
@@ -145,7 +145,8 @@ body > div {
   aspect-ratio: 1 / 1;
   counter-increment: item;
   /* background-color: gray; */
-  transition: all 0.2s ease-in-out;
+  transition: all 0.05s ease-in-out;
+  filter: grayscale(0.66) brightness(0.3);
 }
 
 .scroller-item * {
@@ -167,6 +168,7 @@ body > div {
 
 .featured-2 {
   filter: grayscale(0.66) brightness(0.6);
+  opacity: 0.6;
 }
 
 ol, li {
