@@ -185,7 +185,7 @@
     "name": "Eagles",
     "abbreviation": "PHI",
     "color": "06424d",
-    "alternateColor": "000000",
+    "alternateColor": "A5ACAF",
     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
   },
   "ARI": {
@@ -194,7 +194,7 @@
     "name": "Cardinals",
     "abbreviation": "ARI",
     "color": "a4113e",
-    "alternateColor": "ffffff",
+    "alternateColor": "000000",
     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
   },
   "PIT": {
@@ -287,7 +287,7 @@
     "name": "Ravens",
     "abbreviation": "BAL",
     "color": "29126f",
-    "alternateColor": "000000",
+    "alternateColor": "9E7C0C",
     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
   },
   "HOU": {

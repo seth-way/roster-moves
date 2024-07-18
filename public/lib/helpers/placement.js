@@ -35,6 +35,7 @@ export const placeInFormationD = layout => {
   let x, y;
 
   if (layout.base === 'Base 3-4 D') [x, y] = place34D(layout);
+  if (layout.base === 'Base 4-3 D') [x, y] = place43D(layout);
   if (!x || !y) console.log('can not place players in', layout.base);
 
   return [x, y];
@@ -51,6 +52,19 @@ const place34D = ({ spacing, x, y, id }) => {
   if (['SLB1', 'WLB1'].includes(id)) y -= 1 * spacing;
   if (id === 'SLB1') x += 2.5 * spacing;
   if (id === 'WLB1') x -= 2.5 * spacing;
+
+  return [x, y];
+};
+
+const place43D = ({ spacing, x, y, id }) => {
+  if (id === 'LDT1') x += 0.8 * spacing;
+  if (id === 'RDT1') x -= 0.8 * spacing;
+  if (id === 'RDE1') x -= 2.5 * spacing;
+  if (id === 'LDE1') x += 2.5 * spacing;
+  if (['SLB1', 'WLB1', 'MLB1'].includes(id)) y -= 1 * spacing;
+  if (id === 'SLB1') x += 2.7 * spacing;
+  if (id === 'WLB1') x -= 2.5 * spacing;
+  if (id === 'MLB1') {}
 
   return [x, y];
 };

@@ -8,6 +8,7 @@ const pathToRosters = '../../../public/assets/data/rosters';
 router.get('/:year/:id', async (req, res, next) => {
   const depthChart = {};
   const { year, id } = req.params;
+  console.log('FETCHING DATA\nyear:', year, '\nteamID:', id);
   const endPoint = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/${year}/teams/${id}/depthcharts`;
   try {
     const response = await fetch(endPoint);
