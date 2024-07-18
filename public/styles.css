@@ -108,9 +108,6 @@ body > div {
 /* --- scrollers --- */
 .scroller {
   position: relative;
-  /* padding-top: 75%; */
-  /*filter: drop-shadow(0 0 10px #0003);*/
-  /*perspective: 100px;*/
 }
 
 .scroller-viewport {
@@ -127,24 +124,13 @@ body > div {
   scrollbar-width: 0px;
 }
 
-/* .feature-window {
-  position: absolute;
-  left: -2%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 102%;
-  aspect-ratio: 1 / 1.2;
-  border: green solid;
-  pointer-events: none;
-} */
-
 .scroller-item {
   position: relative;
   flex: 0 0 20%;
   width: 100%;
   aspect-ratio: 1 / 1;
   counter-increment: item;
-  /* background-color: gray; */
+  text-align: center;
   transition: all 0.05s ease-in-out;
   filter: grayscale(0.66) brightness(0.3);
 }

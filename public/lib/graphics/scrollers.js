@@ -18,10 +18,6 @@ const createBlankSpace = () => {
 };
 
 const createObserverCB = (targetDivs, updateFeatured) => entries => {
-  // targetDivs.forEach(div =>
-  //   div.classList.remove('featured', 'featured-1', 'featured-2')
-  // );
-
   for (const entry of entries) {
     let team, year;
     if (entry.target.id && entry.intersectionRatio > 0.65) {
@@ -71,7 +67,7 @@ export const createObserver = (scroller, updateFeatured) => {
   targets.forEach(target => observer.observe(target));
 };
 
-export const createScroller = (data, scroller, type) => {
+export const createScroller = (data, scroller) => {
   const viewPort = document.createElement('ol');
   viewPort.classList.add('scroller-viewport');
   scroller.appendChild(viewPort);
@@ -79,10 +75,12 @@ export const createScroller = (data, scroller, type) => {
   viewPort.appendChild(createBlankSpace());
   viewPort.appendChild(createBlankSpace());
 
+  const itemProcessor =
+    scroller.id === 'teams-scroller' ? createTeamContext : createYearContext;
+
   data.forEach((item, idx) => {
     item.idx = idx;
-    const processedItem =
-      type === 'teams' ? createTeamsContext(item) : createYearContext(item);
+    const processedItem = itemProcessor(item);
     viewPort.appendChild(createElement(processedItem));
   });
 
@@ -90,12 +88,20 @@ export const createScroller = (data, scroller, type) => {
   viewPort.appendChild(createBlankSpace());
 };
 
-export const createTeamsContext = team => {
+export const createTeamContext = team => {
   const context = document.createElement('img');
   context.setAttribute('src', team.logo);
   context.setAttribute('alt', `${team.name} logo`);
   team.context = context;
+
   return team;
 };
 
-export const createYearContext = () => {};
+export const createYearContext = ({ year, idx }) => {
+  const context = document.createElement('h2');
+  context.innerText = `'${year.toString().slice(2)}`;
+
+  const id = year;
+
+  return { context, id, idx };
+};

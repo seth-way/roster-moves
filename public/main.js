@@ -11,7 +11,7 @@ import { createScroller, createObserver } from './lib/graphics/scrollers.js';
 // <><> Variables <><> //
 const teams = {};
 const featured = {
-  team: 'PHI',
+  team: 'ARI',
   year: 2023,
   roster: null,
   baseO: null,
@@ -22,6 +22,7 @@ let unit = 10;
 const frame = document.getElementById('frame');
 const playersOverlay = document.getElementById('players-overlay');
 const teamsScroller = document.getElementById('teams-scroller');
+const yearsScroller = document.getElementById('years-scroller');
 // const teamsCarousel = teamsScroller.querySelector('ol');
 // <><> Event Listeners <><> /
 document.addEventListener('DOMContentLoaded', start);
@@ -33,7 +34,6 @@ async function start() {
     const teamsData = TEAM_ABBREVS.map(abv => {
       const info = { ...teams[abv] };
       info.id = abv;
-      if (info.id === 'PHI') console.log(info);
       return info;
     });
 
@@ -59,21 +59,31 @@ async function start() {
 
     await getFeaturedRoster(featured, teams, () => field.paint(unit));
 
-    createScroller(teamsData, teamsScroller, 'teams');
-    createObserver(
-      teamsScroller,
-      async (team = featured.team, year = featured.year) => {
-        if (team !== featured.team || year !== featured.year) {
-          featured.team = team;
-          featured.year = year;
-          await getFeaturedRoster(featured, teams, () => field.resetRoster(featured));
-        }
-      }
-    );
+    createScroller(teamsData, teamsScroller);
+    createObserver(teamsScroller, observeScroller(field));
+
+    createScroller(YEARS, yearsScroller);
+    createObserver(yearsScroller, observeScroller(field));
 
     field.addTeam(featured, playersOverlay);
     field.animate();
+
+    const yrs = [2020, 2021, 2022, 2023, 2024];
+    console.log('TEAMS', teams);
   } catch (err) {
     console.error(err);
   }
+}
+
+function observeScroller(field) {
+  return async function (team = featured.team, year = featured.year) {
+    console.log('updating...\nteam:', team, '\nyear:', year);
+    if (team !== featured.team || year !== featured.year) {
+      if (team) featured.team = team;
+      if (year) featured.year = year;
+      await getFeaturedRoster(featured, teams, () =>
+        field.resetRoster(featured)
+      );
+    }
+  };
 }

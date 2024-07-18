@@ -40,7 +40,7 @@ export const TEAM_ABBREVS = [
 export const YEARS = [];
 
 for (let i = 2020; i < 2024; i += 1) {
-  YEARS.shift(i);
+  YEARS.unshift({ year: i });
 }
 
 export const POSITIONS = {
